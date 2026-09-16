@@ -1,0 +1,57 @@
+<nz-modal
+  [nzVisible]="isVisible()"
+  [nzClosable]="false"
+  [nzMaskClosable]="false"
+  [nzFooter]="null"
+  nzWidth="600px"
+>
+  <ng-container *nzModalContent>
+    <div class="modal-content">
+      <div class="warning-banner">
+        <i nz-icon nzType="warning" nzTheme="fill" class="warning-icon"></i>
+        <div class="warning-text">
+          <h4>Consentimiento informado obligatorio</h4>
+          <p>Debe aceptar las tres declaraciones para habilitar el registro de fichas médicas.</p>
+        </div>
+      </div>
+
+      <div class="consent-list">
+        <!-- Item 1 -->
+        <div class="consent-item" [class.active]="authHealthData()" (click)="authHealthData.set(!authHealthData())">
+          <label nz-checkbox [ngModel]="authHealthData()" (ngModelChange)="authHealthData.set($event)" (click)="$event.stopPropagation()"></label>
+          <div class="item-content">
+            <h4>Autorización de Tratamiento de Datos de Salud</h4>
+            <p>Autorizo de forma explícita el tratamiento de grupo sanguíneo, alergias, diagnósticos y medicamentos, y su vinculación a un código público de emergencia (Ley 1581 de 2012 — Habeas Data).</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="consent-item" [class.active]="declareGuardianship()" (click)="declareGuardianship.set(!declareGuardianship())">
+          <label nz-checkbox [ngModel]="declareGuardianship()" (ngModelChange)="declareGuardianship.set($event)" (click)="$event.stopPropagation()"></label>
+          <div class="item-content">
+            <h4>Declaración de Patria Potestad / Representación Legal</h4>
+            <p>Declaro bajo juramento que ostento la custodia formal o representación legal de los menores de edad y adultos dependientes que registre en esta plataforma.</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="consent-item" [class.active]="acceptTriageDisclaimer()" (click)="acceptTriageDisclaimer.set(!acceptTriageDisclaimer())">
+          <label nz-checkbox [ngModel]="acceptTriageDisclaimer()" (ngModelChange)="acceptTriageDisclaimer.set($event)" (click)="$event.stopPropagation()"></label>
+          <div class="item-content">
+            <h4>Deslinde de Responsabilidad de Triage Clínico</h4>
+            <p>Entiendo que la plataforma es referencial e informativa, no es un dispositivo médico y no sustituye ambulancias, líneas de emergencia ni protocolos clínicos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-4">
+        <button nz-button nzType="primary" nzBlock class="footer-btn" [disabled]="!canProceed()" (click)="submitConsent()">
+          Aceptar y Continuar
+        </button>
+        <div class="footer-hint">
+          {{ canProceed() ? 'Listo para continuar' : 'Active las 3 casillas para habilitar el botón' }}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,37 @@
+<div class="auth-container">
+  <nz-card nzTitle="Registro de Tutor / Familiar" class="auth-card">
+    <form nz-form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+      
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Por favor ingrese su nombre completo!">
+          <nz-input-group nzPrefixIcon="idcard">
+            <input type="text" nz-input formControlName="displayName" placeholder="Nombre Completo" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Por favor ingrese un correo válido!">
+          <nz-input-group nzPrefixIcon="user">
+            <input type="email" nz-input formControlName="email" placeholder="Correo Electrónico" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="La contraseña debe tener al menos 6 caracteres!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input type="password" nz-input formControlName="password" placeholder="Contraseña" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button nz-button class="login-form-button" [nzType]="'primary'" nzBlock>Registrarse</button>
+      
+      <div class="auth-footer">
+        ¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a>
+      </div>
+      
+    </form>
+  </nz-card>
+</div>

@@ -1,0 +1,40 @@
+<nz-header class="dashboard-header">
+  <div class="header-content">
+    <!-- Left: Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <i nz-icon nzType="heart" nzTheme="fill"></i>
+      </div>
+      <div class="brand-text">
+        <h1>Identidad Médica SOS</h1>
+        <p>Panel familiar &middot; {{ user()?.displayName || 'Usuario' }}</p>
+      </div>
+    </div>
+
+    <!-- Center: Navigation -->
+    <nav class="header-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <i nz-icon nzType="appstore"></i> Perfiles
+      </a>
+      <a routerLink="/dashboard/family/studio" routerLinkActive="active" class="nav-item">
+        <i nz-icon nzType="qrcode"></i> Estudio QR/NFC
+      </a>
+      <a routerLink="/dashboard/family/kit" routerLinkActive="active" class="nav-item">
+        <i nz-icon nzType="printer"></i> Kit familiar
+      </a>
+    </nav>
+
+    <!-- Right: Actions -->
+    <div class="header-actions">
+      <nz-badge nzDot class="notification-badge">
+        <button nz-button nzType="text" nzShape="circle">
+          <i nz-icon nzType="bell" nzTheme="outline"></i>
+        </button>
+      </nz-badge>
+      
+      <button nz-button nzType="primary" routerLink="/dashboard/family/editor/new" class="create-btn">
+        <i nz-icon nzType="plus"></i> Crear Nuevo Perfil
+      </button>
+    </div>
+  </div>
+</nz-header>

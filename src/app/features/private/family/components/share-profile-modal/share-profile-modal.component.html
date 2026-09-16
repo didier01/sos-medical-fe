@@ -1,0 +1,30 @@
+<nz-modal
+  [nzVisible]="true"
+  nzTitle="Invitar Co-Administrador: {{ profileName() }}"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkDisabled]="shareForm.invalid"
+  nzOkText="Enviar Invitación"
+  nzCancelText="Cancelar"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="shareForm" nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzRequired>Correo Electrónico</nz-form-label>
+        <nz-form-control nzErrorTip="Ingrese un correo válido">
+          <input nz-input formControlName="email" type="email" placeholder="ejemplo@correo.com" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzRequired>Rol de Acceso</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="role">
+            <nz-option nzValue="CO_ADMIN" nzLabel="Co-Administrador (Puede editar)"></nz-option>
+            <nz-option nzValue="READER" nzLabel="Lector (Solo lectura)"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

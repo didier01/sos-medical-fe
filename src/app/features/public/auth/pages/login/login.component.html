@@ -1,0 +1,87 @@
+<div class="split-layout">
+  <!-- Left Column: Form -->
+  <div class="form-column">
+    <div class="auth-content">
+      <div class="brand">
+        <nz-avatar nzIcon="heart" class="brand-icon" [nzSize]="48" [nzShape]="'square'"></nz-avatar>
+        <div class="brand-text">
+          <h1>Identidad Médica SOS</h1>
+          <p>QR y NFC de emergencia para toda la familia</p>
+        </div>
+      </div>
+
+      <nz-card class="login-card" [nzBordered]="true">
+        <h2>Bienvenido de nuevo</h2>
+        <p class="subtitle">Acceda para administrar las fichas médicas de su hogar.</p>
+
+        <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()" nzLayout="vertical">
+          <nz-form-item>
+            <nz-form-label nzRequired>Correo electrónico</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese un correo válido">
+              <nz-input-group [nzPrefix]="prefixUser">
+                <input nz-input formControlName="email" placeholder="didier@familia.co" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Contraseña</nz-form-label>
+            <nz-form-control nzErrorTip="La contraseña es requerida">
+              <nz-input-group [nzPrefix]="prefixLock" [nzSuffix]="suffixPassword">
+                <input nz-input [type]="passwordVisible ? 'text' : 'password'" formControlName="password" placeholder="••••••••" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <button nz-button nzType="primary" nzBlock nzSize="large" class="submit-btn" [disabled]="loginForm.invalid">
+            <span>Ingresar</span>
+          </button>
+          
+          <nz-divider nzText="o"></nz-divider>
+          
+          <button nz-button nzType="default" nzBlock nzSize="large" type="button" class="google-btn">
+            <i nz-icon nzType="google"></i> <span>Acceder con Google</span>
+          </button>
+          
+          <div class="links">
+            <a routerLink="/auth/forgot-password">¿Olvidó su acceso? Recuperar contraseña</a>
+          </div>
+        </form>
+      </nz-card>
+      
+      <div class="legal-footer">
+        <i nz-icon nzType="safety-certificate" nzTheme="outline" class="safe-icon"></i>
+        <span>Datos de salud cifrados y tratados conforme a la Ley 1581 de 2012 de Colombia.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Info -->
+  <div class="info-column">
+    <div class="info-content">
+      <div class="badge-text">ENFOQUE ANTI-EXTORSIÓN</div>
+      <h1>El socorrista ve lo vital.<br>Los teléfonos de la familia permanecen ocultos.</h1>
+      
+      <ul class="features-list">
+        <li>
+          <span class="dot dot-red"></span>
+          Tipo de sangre y alergias mortales en primer plano.
+        </li>
+        <li>
+          <span class="dot dot-orange"></span>
+          Notificación a la familia con GPS en un solo toque.
+        </li>
+        <li>
+          <span class="dot dot-green"></span>
+          Teléfono revelado solo tras deslizar y quedar auditado.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ng-template #prefixUser><i nz-icon nzType="mail"></i></ng-template>
+<ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
+<ng-template #suffixPassword>
+  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible" class="cursor-pointer"></i>
+</ng-template>

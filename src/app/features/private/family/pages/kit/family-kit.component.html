@@ -1,0 +1,122 @@
+<div class="kit-layout">
+  
+  <div class="breadcrumb no-print">
+    <a routerLink="/dashboard/family" class="back-link">
+      <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+      <span>Volver al Panel Familiar</span>
+    </a>
+  </div>
+
+  <!-- Header (Oculto al imprimir) -->
+  <div class="kit-header no-print">
+    <div class="header-info">
+      <h1>Kit Familiar para Imprimir</h1>
+      <p class="subtitle">6 caras · tamaño carné 85.6 x 54 mm · líneas de corte punteadas</p>
+      <div class="instructions">
+        <i nz-icon nzType="scissor" nzTheme="outline"></i>
+        <span>Recorte por las líneas punteadas y doble por la mitad: el frente queda con el QR y el reverso con las alergias.</span>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <nz-radio-group [(ngModel)]="paperSize">
+        <label nz-radio-button nzValue="carta">Carta</label>
+        <label nz-radio-button nzValue="a4">A4</label>
+      </nz-radio-group>
+      
+      <button nz-button nzType="primary" (click)="downloadPdf()">
+        <i nz-icon nzType="download" nzTheme="outline"></i>
+        <span>Descargar PDF</span>
+      </button>
+      
+      <button nz-button nzType="default" (click)="printKit()">
+        <i nz-icon nzType="printer" nzTheme="outline"></i>
+        <span>Imprimir</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedor del Papel -->
+  <div class="paper-wrapper">
+    <div class="paper" [class.a4]="paperSize() === 'a4'" [class.carta]="paperSize() === 'carta'">
+      
+      <div class="paper-header">
+        <span class="left">KIT MÉDICO FAMILIAR · IDENTIDAD SOS</span>
+        <span class="right" *ngIf="paperSize() === 'carta'">LETTER 8.5 x 11 IN</span>
+        <span class="right" *ngIf="paperSize() === 'a4'">A4 210 x 297 MM</span>
+      </div>
+
+      <div class="badges-container">
+        @for (profile of profiles(); track profile.id) {
+          <!-- Carné Individual -->
+          <div class="badge-card">
+            
+            <!-- Frente del Carné (Izquierda) -->
+            <div class="badge-front">
+              <div class="front-header">
+                <nz-avatar [nzSize]="48" [nzIcon]="'user'" 
+                           [ngClass]="{'avatar-m': profile.gender === 'M', 'avatar-f': profile.gender === 'F'}">
+                </nz-avatar>
+                <div class="name-info">
+                  <div class="name">{{ profile.name }}</div>
+                  <div class="age">{{ profile.ageText }}</div>
+                </div>
+              </div>
+              
+              <div class="blood-type-box">
+                {{ profile.bloodType }}
+              </div>
+              
+              <div class="eps-info">
+                <div class="eps-name">{{ profile.epsName }}</div>
+                <div class="eps-code">{{ profile.epsPhone }}</div>
+              </div>
+            </div>
+
+            <!-- Reverso del Carné (Derecha) -->
+            <div class="badge-back">
+              <div class="qr-container">
+                <div class="qr-code-simulated">
+                  <div class="qr-pattern"></div>
+                  <div class="qr-logo-center">
+                    <nz-avatar nzIcon="heart" nzSize="small" nzShape="square" class="qr-heart"></nz-avatar>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="medical-data">
+                <div class="section-title critical">
+                  <i nz-icon nzType="file-text" nzTheme="outline"></i>
+                  <span>ALERGIAS CRÍTICAS</span>
+                </div>
+                <ul class="allergies-list">
+                  @for (allergy of profile.allergies; track allergy.name) {
+                    <li [class.mortal]="allergy.severity === 'mortal'" [class.moderada]="allergy.severity === 'moderada'">
+                      • {{ allergy.name }} ({{ allergy.severity }})
+                    </li>
+                  }
+                </ul>
+                
+                <div class="section-title">CONDICIONES</div>
+                <div class="section-text">{{ profile.conditions }}</div>
+                
+                <div class="section-title">CONTACTO SOS</div>
+                <div class="section-text bold">Madre: escanee el QR para notificar sin exponer el número</div>
+              </div>
+
+              <div class="legal-footer">
+                Documento referencial, no es dispositivo médico. Línea de emergencias 123 · Ambulancia aseguradora +57 601 437 8888
+              </div>
+            </div>
+            
+          </div>
+        }
+      </div>
+
+      <div class="paper-footer">
+        Información referencial provista por los tutores. Ante riesgo vital llame al 123.
+      </div>
+      
+    </div>
+  </div>
+</div>

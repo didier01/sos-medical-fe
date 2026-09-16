@@ -1,0 +1,378 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding-bottom: 60px;
+}
+
+.kit-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.breadcrumb {
+  margin-bottom: 24px;
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: var(--primary-color);
+    }
+    
+    i {
+      font-size: 16px;
+    }
+  }
+}
+
+.kit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  
+  .header-info {
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 4px 0;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin: 0 0 16px 0;
+    }
+    
+    .instructions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      
+      i {
+        font-size: 16px;
+      }
+    }
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    
+    nz-radio-group {
+      margin-right: 8px;
+    }
+  }
+}
+
+/* ==========================================================================
+   PAPER SIMULATION
+   ========================================================================== */
+.paper-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.paper {
+  background: white;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  border: 1px solid #e2e8f0;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  
+  /* Tamaños a escala (aproximados para pantalla) */
+  &.carta {
+    width: 850px;
+    min-height: 1100px;
+  }
+  
+  &.a4 {
+    width: 794px;
+    min-height: 1123px;
+  }
+  
+  .paper-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    margin-bottom: 40px;
+  }
+  
+  .paper-footer {
+    margin-top: auto;
+    text-align: center;
+    font-size: 10px;
+    color: #94a3b8;
+    padding-top: 40px;
+  }
+}
+
+/* ==========================================================================
+   BADGES (CARNÉS)
+   ========================================================================== */
+.badges-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+
+.badge-card {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  height: 240px; /* Proporción aprox de carné doble (85.6x54mm -> escalado) */
+  box-sizing: border-box;
+}
+
+/* Mitad Izquierda (Frente) */
+.badge-front {
+  flex: 1;
+  border-right: 1px dashed #cbd5e1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  
+  .front-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    
+    nz-avatar {
+      background-color: #e2e8f0;
+      color: #64748b;
+      
+      &.avatar-m {
+        background-color: #dbeafe;
+        color: #2563eb;
+      }
+      &.avatar-f {
+        background-color: #fce7f3;
+        color: #db2777;
+      }
+    }
+    
+    .name-info {
+      .name {
+        font-weight: 700;
+        font-size: 18px;
+        color: var(--text-primary);
+      }
+      .age {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+    }
+  }
+  
+  .blood-type-box {
+    background-color: #fee2e2; /* light red */
+    color: var(--error-color);
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: auto; /* Empuja el resto hacia abajo */
+  }
+  
+  .eps-info {
+    .eps-name {
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+    .eps-code {
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+  }
+}
+
+/* Mitad Derecha (Reverso) */
+.badge-back {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: row-reverse; /* QR a la derecha */
+  gap: 16px;
+  
+  .qr-container {
+    flex-shrink: 0;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    .qr-code-simulated {
+      width: 100px;
+      height: 100px;
+      background: #f1f5f9; /* Simulamos el patrón QR */
+      background-image: radial-gradient(#64748b 15%, transparent 16%), radial-gradient(#64748b 15%, transparent 16%);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      
+      .qr-logo-center {
+        background: white;
+        padding: 4px;
+        border-radius: 4px;
+        
+        .qr-heart {
+          background-color: var(--error-color);
+          color: white;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+  
+  .medical-data {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      
+      &.critical {
+        color: var(--error-color);
+      }
+    }
+    
+    .allergies-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px 0;
+      font-size: 12px;
+      font-weight: 700;
+      
+      li {
+        margin-bottom: 2px;
+        &.mortal { color: var(--error-color); }
+        &.moderada { color: #f59e0b; }
+      }
+    }
+    
+    .section-text {
+      font-size: 11px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      
+      &.bold {
+        font-weight: 700;
+      }
+    }
+  }
+  
+  .legal-footer {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    font-size: 8px;
+    color: #94a3b8;
+    line-height: 1.4;
+    text-align: right;
+    width: calc(100% - 40px); /* Ajuste basado en el padding */
+  }
+}
+
+/* Truco para posicionar el footer legal del reverso correctamente */
+.badge-back {
+  position: relative;
+  .medical-data {
+    margin-bottom: 30px; /* Espacio para el footer */
+  }
+  .legal-footer {
+    /* Limitamos el footer solo a la mitad derecha */
+    left: auto;
+    width: calc(50% - 40px);
+  }
+}
+
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+@media print {
+  :host {
+    background: transparent;
+    padding: 0;
+  }
+  
+  .kit-layout {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .paper-wrapper {
+    display: block;
+  }
+  
+  .paper {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100% !important;
+    min-height: auto !important;
+    
+    /* Para que en impresión ocupe toda la hoja sin bordes extras del navegador */
+    @page {
+      margin: 1cm;
+    }
+  }
+  
+  .badge-card {
+    page-break-inside: avoid;
+    border-color: #94a3b8; /* Borde más oscuro en impresión para asegurar visibilidad */
+  }
+  
+  .badge-front {
+    border-right-color: #94a3b8;
+  }
+  
+  /* Asegurar colores exactos al imprimir (Webkit) */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

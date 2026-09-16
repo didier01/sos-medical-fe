@@ -1,0 +1,89 @@
+<div class="dashboard-container">
+  <!-- Banner superior -->
+  <div class="info-banner">
+    <div class="banner-content">
+      <div class="banner-icon">
+        <i nz-icon nzType="printer" nzTheme="fill"></i>
+      </div>
+      <div class="banner-text">
+        <h4>Kit Familiar para Imprimir</h4>
+        <p>Carnés tamaño billetera con QR nítido para toda la familia, listos para plastificar.</p>
+      </div>
+    </div>
+    <button nz-button nzType="default" class="banner-btn" routerLink="/dashboard/family/kit">Descargar kit</button>
+  </div>
+
+  <div class="dashboard-header">
+    <div class="title-group">
+      <h2>Perfiles del hogar</h2>
+      <p class="subtitle">{{ profiles().length }} personas protegidas</p>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="[24, 24]">
+    <!-- Perfiles existentes -->
+    <div nz-col [nzXs]="24" [nzMd]="12" *ngFor="let profile of profiles()">
+      <nz-card class="profile-card" [nzBordered]="true">
+        <!-- Top row: Avatar & Info -->
+        <div class="profile-header">
+          <div class="user-info">
+            <nz-avatar [nzSize]="64" [nzSrc]="'https://i.pravatar.cc/150?u=' + profile.id"></nz-avatar>
+            <div class="details">
+              <h3>{{ profile.name }}</h3>
+              <p class="age">10 años y 4 meses</p>
+              <nz-badge class="role-badge" [nzStatus]="getBadgeStatus(profile.role)" [nzText]="profile.role"></nz-badge>
+            </div>
+          </div>
+          <div class="blood-type">
+            <i nz-icon nzType="bg-colors" class="drop-icon"></i> O+
+          </div>
+        </div>
+
+        <!-- Middle rows: Status & Alerts -->
+        <div class="profile-rows">
+          <div class="status-row">
+            <i nz-icon nzType="team"></i> Co-administrado con Mamá
+          </div>
+          <div class="alert-row">
+            <i nz-icon nzType="warning" nzTheme="fill"></i> Alergia mortal: Penicilina
+          </div>
+        </div>
+
+        <!-- Bottom row: Actions -->
+        <div class="profile-actions">
+          <button nz-button nzType="default" class="action-btn main-action">
+            <i nz-icon nzType="qrcode"></i> Ver código
+          </button>
+          <button nz-button nzType="default" class="action-btn icon-only" (click)="editProfile(profile.id)">
+            <i nz-icon nzType="edit"></i>
+          </button>
+          <button nz-button nzType="default" class="action-btn icon-only" (click)="openShareModal(profile)">
+            <i nz-icon nzType="more"></i>
+          </button>
+        </div>
+      </nz-card>
+    </div>
+
+    <!-- Tarjeta vacía para añadir nuevo -->
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <div class="empty-profile-card">
+        <div class="empty-content">
+          <div class="icon-wrapper">
+            <i nz-icon nzType="user-add"></i>
+          </div>
+          <h3>Registre al primer miembro</h3>
+          <p>Cree la ficha médica de un hijo, un adulto mayor o de usted mismo.</p>
+          <button nz-button nzType="primary" (click)="createNewProfile()" class="add-btn">
+            + Crear Nuevo Perfil
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-share-profile-modal 
+  *ngIf="selectedProfile()" 
+  [profileName]="selectedProfile()?.name || ''"
+  (onClose)="closeShareModal()">
+</app-share-profile-modal>

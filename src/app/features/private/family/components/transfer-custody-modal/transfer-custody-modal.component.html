@@ -1,0 +1,29 @@
+<nz-modal
+  [nzVisible]="true"
+  nzTitle="Traspaso de Custodia Definitiva"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkDisabled]="transferForm.invalid"
+  nzOkText="Confirmar Traspaso"
+  nzCancelText="Cancelar"
+  nzOkDanger
+>
+  <ng-container *nzModalContent>
+    <nz-alert
+      nzType="error"
+      nzMessage="Advertencia Crítica"
+      nzDescription="Estás a punto de transferir la titularidad completa de este perfil. Una vez que el nuevo tutor acepte, perderás los derechos de administración."
+      nzShowIcon
+      class="mb-3"
+    ></nz-alert>
+    
+    <form nz-form [formGroup]="transferForm" nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzRequired>Correo Electrónico del Nuevo Tutor</nz-form-label>
+        <nz-form-control nzErrorTip="Ingrese el correo válido de la persona que recibirá la custodia">
+          <input nz-input formControlName="email" type="email" placeholder="nuevo.tutor@correo.com" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

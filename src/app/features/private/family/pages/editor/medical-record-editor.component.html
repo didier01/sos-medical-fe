@@ -1,0 +1,124 @@
+<div class="editor-container">
+  
+  <div class="breadcrumb">
+    <a (click)="goBack()" class="back-link">
+      <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+      <span>Volver al Panel Familiar</span>
+    </a>
+  </div>
+
+  <div class="editor-header">
+    <h2>{{ isNewProfile ? 'Nuevo Perfil Médico' : 'Editar Ficha Médica' }}</h2>
+    <div class="actions">
+      <button nz-button nzType="default" (click)="goBack()">Cancelar</button>
+      <button nz-button nzType="primary" (click)="saveProfile()" [disabled]="medicalForm.invalid">Guardar</button>
+    </div>
+  </div>
+
+  <form nz-form [formGroup]="medicalForm" nzLayout="vertical">
+    <nz-collapse>
+      <!-- 1. Biometría -->
+      <nz-collapse-panel nzHeader="1. Datos Personales y Biometría" [nzActive]="true">
+        <div class="form-grid">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre Completo</nz-form-label>
+            <nz-form-control nzErrorTip="Requerido">
+              <input nz-input formControlName="fullName" placeholder="Ej. Juan Pérez" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Fecha de Nacimiento</nz-form-label>
+            <nz-form-control nzErrorTip="Requerido">
+              <nz-date-picker formControlName="birthDate" nzPlaceHolder="Seleccione fecha" nzFormat="dd/MM/yyyy" style="width: 100%;"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+          
+          <nz-form-item>
+            <nz-form-label nzRequired>Grupo Sanguíneo</nz-form-label>
+            <nz-form-control nzErrorTip="Requerido">
+              <nz-select formControlName="bloodType" nzPlaceHolder="Seleccione">
+                <nz-option nzValue="O+" nzLabel="O+"></nz-option>
+                <nz-option nzValue="O-" nzLabel="O-"></nz-option>
+                <nz-option nzValue="A+" nzLabel="A+"></nz-option>
+                <nz-option nzValue="A-" nzLabel="A-"></nz-option>
+                <nz-option nzValue="B+" nzLabel="B+"></nz-option>
+                <nz-option nzValue="B-" nzLabel="B-"></nz-option>
+                <nz-option nzValue="AB+" nzLabel="AB+"></nz-option>
+                <nz-option nzValue="AB-" nzLabel="AB-"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- 2. Directorio SOS -->
+      <nz-collapse-panel nzHeader="2. Directorio SOS Privado" [nzActive]="true">
+        <div class="contact-helper">
+          <button nz-button nzType="default" nzSize="small" (click)="useMyDataAsContact()">
+            <i nz-icon nzType="user"></i> Usar mis datos como contacto SOS principal
+          </button>
+        </div>
+        
+        <div formGroupName="emergencyContact" class="form-grid">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre del Contacto</nz-form-label>
+            <nz-form-control nzErrorTip="Requerido">
+              <input nz-input formControlName="name" placeholder="Ej. María (Madre)" />
+            </nz-form-control>
+          </nz-form-item>
+          
+          <nz-form-item>
+            <nz-form-label nzRequired>Teléfono (Formato E.164: +57...)</nz-form-label>
+            <nz-form-control nzErrorTip="Requiere formato internacional">
+              <input nz-input formControlName="phone" placeholder="+57 300 000 0000" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="switch-item">
+            <nz-form-label>¿Dispone de WhatsApp?</nz-form-label>
+            <nz-form-control>
+              <nz-switch formControlName="hasWhatsapp"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- 3. Alertas Críticas -->
+      <nz-collapse-panel nzHeader="3. Alertas Críticas Médicas" [nzActive]="true">
+        <nz-form-item>
+          <nz-form-label>Alergias Severas (Sepárelas por comas)</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="allergies" placeholder="Ej. Penicilina, Nueces" />
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+          <nz-form-label>Condiciones Preexistentes</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="conditions" placeholder="Ej. Asma, Diabetes Tipo 1" />
+          </nz-form-control>
+        </nz-form-item>
+        
+        <div class="form-grid">
+          <nz-form-item>
+            <nz-form-label nzRequired>Seguridad Social / EPS</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="insurance" placeholder="Ej. Sura, Sanitas" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- 4. Instrucciones Especiales -->
+      <nz-collapse-panel nzHeader="4. Instrucciones Especiales" [nzActive]="true">
+        <nz-form-item>
+          <nz-form-label>Notas Operativas</nz-form-label>
+          <nz-form-control>
+            <textarea nz-input formControlName="notes" rows="4" placeholder="Ej. El inhalador está en el bolsillo pequeño de la mochila."></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </form>
+</div>

@@ -1,0 +1,82 @@
+@use "sass:color";
+
+/* ==========================================================================
+   ESTILOS BASE Y COMPONENTES (NG-ZORRO)
+   ========================================================================== */
+
+:root {
+  --border-radius-base: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-sm: 6px;
+
+  --box-shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --box-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --transition-base: all 0.3s ease-in-out;
+
+  --input-border-color: #cbd5e1;
+  --input-focus-border: var(--primary-color);
+  --input-bg: #ffffff;
+}
+
+/* ==========================================================================
+   BOTONES
+   ========================================================================== */
+
+.ant-btn {
+  border-radius: var(--border-radius-base) !important;
+  font-weight: 500 !important;
+
+  &.ant-btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: #ffffff !important;
+
+    &:hover,
+    &:focus {
+      background-color: color.adjust(#0284c7, $lightness: -10%) !important;
+      border-color: color.adjust(#0284c7, $lightness: -10%) !important;
+    }
+  }
+
+  &.ant-btn-dangerous {
+    background-color: var(--error-color, #dc2626) !important;
+    border-color: var(--error-color, #dc2626) !important;
+    color: #ffffff !important;
+
+    &:hover,
+    &:focus {
+      background-color: color.adjust(#dc2626, $lightness: -10%) !important;
+      border-color: color.adjust(#dc2626, $lightness: -10%) !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   INPUTS Y DROPDOWNS
+   ========================================================================== */
+
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select-selector {
+  border-radius: var(--border-radius-base) !important;
+  padding: 4px 10px !important;
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused,
+.ant-select-focused .ant-select-selector {
+  border-color: var(--input-focus-border) !important;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2) !important;
+}
+
+/* ==========================================================================
+   CARDS & MODALES
+   ========================================================================== */
+
+.ant-card,
+.ant-modal-content {
+  border-radius: var(--border-radius-lg) !important;
+}

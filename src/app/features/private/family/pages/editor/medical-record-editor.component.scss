@@ -1,0 +1,142 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 40px 24px;
+}
+
+.editor-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  margin-bottom: 24px;
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+    
+    &:hover {
+      color: var(--primary-color);
+    }
+    
+    i {
+      font-size: 16px;
+    }
+  }
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  
+  h2 { 
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  .actions { 
+    display: flex; 
+    gap: 12px; 
+    
+    button {
+      border-radius: 8px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Rediseño de Zorro Collapse para que parezca una tarjeta unificada */
+::ng-deep .ant-collapse {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+
+  > .ant-collapse-item {
+    border-bottom: 1px solid #e2e8f0;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+
+    > .ant-collapse-header {
+      padding: 16px 24px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 14px;
+      background-color: white;
+      
+      .ant-collapse-arrow {
+        color: #94a3b8;
+      }
+    }
+    
+    > .ant-collapse-content {
+      border-top: 1px solid #e2e8f0;
+      background-color: white;
+      
+      > .ant-collapse-content-box {
+        padding: 24px;
+      }
+    }
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-helper {
+  margin-bottom: 24px;
+  
+  button {
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+    i { color: #64748b; }
+  }
+}
+
+.switch-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 8px;
+  
+  ::ng-deep .ant-form-item-label {
+    text-align: left;
+    padding-bottom: 8px;
+  }
+}
+
+/* Asegurando que los inputs tengan buen diseño */
+::ng-deep {
+  .ant-form-item-label > label {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  
+  .ant-input, .ant-select-selector, .ant-input-number {
+    border-radius: 8px !important;
+    padding: 8px 12px;
+  }
+}
