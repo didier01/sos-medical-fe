@@ -4,6 +4,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     NzInputModule,
     NzSelectModule,
     NzButtonModule,
+    NzRadioModule,
     ReactiveFormsModule
   ],
   templateUrl: './share-profile-modal.component.html',

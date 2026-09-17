@@ -10,14 +10,14 @@ import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { MailOutline, LockOutline, EyeOutline, EyeInvisibleOutline, HeartOutline, GoogleOutline, SafetyCertificateOutline,
   PrinterFill, UserAddOutline, BgColorsOutline, TeamOutline, WarningFill, QrcodeOutline, MoreOutline, HeartFill, 
   AppstoreOutline, PrinterOutline, BellOutline, PlusOutline, ScissorOutline, DownloadOutline, UserOutline, FileTextOutline, EditOutline, ArrowLeftOutline,
-  ScanOutline, WifiOutline, CheckCircleFill
+  ScanOutline, WifiOutline, CheckCircleFill, ExportOutline, CloudOutline, DisconnectOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
   MailOutline, LockOutline, EyeOutline, EyeInvisibleOutline, HeartOutline, GoogleOutline, SafetyCertificateOutline,
   PrinterFill, UserAddOutline, BgColorsOutline, TeamOutline, WarningFill, QrcodeOutline, MoreOutline, HeartFill,
   AppstoreOutline, PrinterOutline, BellOutline, PlusOutline, ScissorOutline, DownloadOutline, UserOutline, FileTextOutline, EditOutline, ArrowLeftOutline,
-  ScanOutline, WifiOutline, CheckCircleFill
+  ScanOutline, WifiOutline, CheckCircleFill, ExportOutline, CloudOutline, DisconnectOutline
 ];
 
 import { routes } from './app.routes';

@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -23,14 +23,25 @@ import { CommonModule } from '@angular/common';
   styleUrl: './transfer-custody-modal.component.scss'
 })
 export class TransferCustodyModalComponent {
-  profileId = input.required<string>();
+  profileName = input.required<string>();
   onClose = output<void>();
 
   private fb = inject(FormBuilder);
 
+  step = signal<number>(1);
+
   transferForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email]],
+    confirmText: ['', [Validators.required, Validators.pattern('^TRANSFERIR$')]]
   });
+
+  nextStep(): void {
+    this.step.set(2);
+  }
+
+  prevStep(): void {
+    this.step.set(1);
+  }
 
   handleCancel(): void {
     this.onClose.emit();
@@ -38,7 +49,7 @@ export class TransferCustodyModalComponent {
 
   handleOk(): void {
     if (this.transferForm.valid) {
-      console.log('Iniciando traspaso para el perfil', this.profileId(), 'a:', this.transferForm.value.email);
+      console.log('Iniciando traspaso para el perfil', this.profileName(), 'a:', this.transferForm.value.email);
       this.onClose.emit();
     }
   }

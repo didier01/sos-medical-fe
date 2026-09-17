@@ -1,29 +1,61 @@
 <nz-modal
   [nzVisible]="true"
-  nzTitle="Traspaso de Custodia Definitiva"
+  [nzTitle]="'Traspaso de Custodia · Paso ' + step() + ' de 2'"
   (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleOk()"
-  [nzOkDisabled]="transferForm.invalid"
-  nzOkText="Confirmar Traspaso"
-  nzCancelText="Cancelar"
-  nzOkDanger
+  [nzFooter]="null"
 >
   <ng-container *nzModalContent>
-    <nz-alert
-      nzType="error"
-      nzMessage="Advertencia Crítica"
-      nzDescription="Estás a punto de transferir la titularidad completa de este perfil. Una vez que el nuevo tutor acepte, perderás los derechos de administración."
-      nzShowIcon
-      class="mb-3"
-    ></nz-alert>
-    
-    <form nz-form [formGroup]="transferForm" nzLayout="vertical">
-      <nz-form-item>
-        <nz-form-label nzRequired>Correo Electrónico del Nuevo Tutor</nz-form-label>
-        <nz-form-control nzErrorTip="Ingrese el correo válido de la persona que recibirá la custodia">
-          <input nz-input formControlName="email" type="email" placeholder="nuevo.tutor@correo.com" />
-        </nz-form-control>
-      </nz-form-item>
-    </form>
+    <!-- PASO 1 -->
+    <div *ngIf="step() === 1" class="step-container">
+      <nz-alert
+        nzType="error"
+        nzMessage="Esta acción es irreversible"
+        nzDescription="Al transferir la custodia de {{ profileName() }}, el nuevo titular asumirá el control legal del perfil: podrá editar la ficha médica, invitar cuidadores y retirarle su acceso."
+        nzShowIcon
+        class="mb-4 custom-alert"
+      ></nz-alert>
+      
+      <div class="modal-actions">
+        <button nz-button nzType="primary" nzBlock nzSize="large" (click)="nextStep()" class="submit-btn">
+          Entiendo, continuar
+        </button>
+      </div>
+    </div>
+
+    <!-- PASO 2 -->
+    <div *ngIf="step() === 2" class="step-container">
+      <nz-alert
+        nzType="success"
+        nzMessage="El código QR y el chip NFC no cambian"
+        nzDescription="Los carnés impresos, stickers y llaveros NFC ya entregados seguirán funcionando. No requiere reimpresión ni regrabación."
+        nzShowIcon
+        class="mb-4 custom-alert success-alert"
+      ></nz-alert>
+
+      <form nz-form [formGroup]="transferForm" nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label nzRequired>Correo del nuevo titular</nz-form-label>
+          <nz-form-control nzErrorTip="Ingrese el correo válido del nuevo titular">
+            <input nz-input nzSize="large" formControlName="email" type="email" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired>Escriba TRANSFERIR para confirmar</nz-form-label>
+          <nz-form-control nzErrorTip="Debe escribir TRANSFERIR">
+            <input nz-input nzSize="large" formControlName="confirmText" type="text" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div class="modal-actions dual-actions">
+          <button nz-button nzType="default" nzSize="large" (click)="prevStep()" class="back-btn">
+            Atrás
+          </button>
+          <button nz-button nzType="primary" nzDanger nzSize="large" (click)="handleOk()" [disabled]="transferForm.invalid" class="submit-btn danger-btn">
+            Enviar traspaso
+          </button>
+        </div>
+      </form>
+    </div>
   </ng-container>
 </nz-modal>

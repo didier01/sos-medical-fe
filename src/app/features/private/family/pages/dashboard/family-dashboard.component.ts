@@ -6,9 +6,11 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ShareProfileModalComponent } from '../../components/share-profile-modal/share-profile-modal.component';
+import { TransferCustodyModalComponent } from '../../components/transfer-custody-modal/transfer-custody-modal.component';
 
 interface FamilyProfile {
   id: string;
@@ -30,7 +32,9 @@ interface FamilyProfile {
     NzButtonModule,
     NzGridModule,
     NzIconModule,
+    NzDropDownModule,
     ShareProfileModalComponent,
+    TransferCustodyModalComponent,
     RouterModule
   ],
   templateUrl: './family-dashboard.component.html',
@@ -45,6 +49,7 @@ export class FamilyDashboardComponent {
   ]);
 
   selectedProfile = signal<FamilyProfile | null>(null);
+  transferProfile = signal<FamilyProfile | null>(null);
 
   constructor(private router: Router) {}
 
@@ -71,5 +76,13 @@ export class FamilyDashboardComponent {
 
   closeShareModal() {
     this.selectedProfile.set(null);
+  }
+
+  openTransferModal(profile: FamilyProfile) {
+    this.transferProfile.set(profile);
+  }
+
+  closeTransferModal() {
+    this.transferProfile.set(null);
   }
 }

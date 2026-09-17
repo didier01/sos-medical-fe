@@ -1,30 +1,43 @@
 <nz-modal
   [nzVisible]="true"
-  nzTitle="Invitar Co-Administrador: {{ profileName() }}"
+  nzTitle="Invitar Co-Administrador"
   (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleOk()"
-  [nzOkDisabled]="shareForm.invalid"
-  nzOkText="Enviar Invitación"
-  nzCancelText="Cancelar"
+  [nzFooter]="null"
 >
   <ng-container *nzModalContent>
+    <p class="share-description">
+      Comparta el cuidado de la ficha de <strong>{{ profileName() }}</strong> con otro tutor, abuela o niñera.
+    </p>
+
     <form nz-form [formGroup]="shareForm" nzLayout="vertical">
       <nz-form-item>
-        <nz-form-label nzRequired>Correo Electrónico</nz-form-label>
+        <nz-form-label nzRequired>Correo del segundo tutor</nz-form-label>
         <nz-form-control nzErrorTip="Ingrese un correo válido">
-          <input nz-input formControlName="email" type="email" placeholder="ejemplo@correo.com" />
+          <input nz-input nzSize="large" formControlName="email" type="email" placeholder="tutor@correo.com" />
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label nzRequired>Rol de Acceso</nz-form-label>
-        <nz-form-control>
-          <nz-select formControlName="role">
-            <nz-option nzValue="CO_ADMIN" nzLabel="Co-Administrador (Puede editar)"></nz-option>
-            <nz-option nzValue="READER" nzLabel="Lector (Solo lectura)"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
+      <nz-radio-group formControlName="role" class="role-radio-group">
+        <label nz-radio nzValue="CO_ADMIN" class="custom-radio-card" [class.selected]="shareForm.get('role')?.value === 'CO_ADMIN'">
+          <div class="radio-content">
+            <span class="radio-title">Co-Administrador</span>
+            <span class="radio-desc">Edición médica total y recepción de alertas SOS.</span>
+          </div>
+        </label>
+        
+        <label nz-radio nzValue="READER" class="custom-radio-card" [class.selected]="shareForm.get('role')?.value === 'READER'">
+          <div class="radio-content">
+            <span class="radio-title">Lector</span>
+            <span class="radio-desc">Solo consulta y descarga de códigos para impresión.</span>
+          </div>
+        </label>
+      </nz-radio-group>
+
+      <div class="modal-actions">
+        <button nz-button nzType="primary" nzBlock nzSize="large" (click)="handleOk()" [disabled]="shareForm.invalid" class="submit-btn">
+          Enviar Invitación
+        </button>
+      </div>
     </form>
   </ng-container>
 </nz-modal>
