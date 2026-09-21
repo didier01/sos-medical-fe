@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -11,14 +11,8 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ShareProfileModalComponent } from '../../components/share-profile-modal/share-profile-modal.component';
 import { TransferCustodyModalComponent } from '../../components/transfer-custody-modal/transfer-custody-modal.component';
-
-interface FamilyProfile {
-  id: string;
-  name: string;
-  role: 'Titular' | 'Hijo/a' | 'Adulto Mayor';
-  avatarUrl?: string;
-  coManaged?: boolean;
-}
+import { FamilyService } from '../../../../../core/family/family.service';
+import { Profile } from '../../../../../core/family/models/profile.interface';
 
 @Component({
   selector: 'app-family-dashboard',
@@ -40,25 +34,35 @@ interface FamilyProfile {
   templateUrl: './family-dashboard.component.html',
   styleUrl: './family-dashboard.component.scss'
 })
-export class FamilyDashboardComponent {
-  // Mock data
-  profiles = signal<FamilyProfile[]>([
-    { id: '1', name: 'Tutor Principal', role: 'Titular' },
-    { id: '2', name: 'Hijo Menor', role: 'Hijo/a', coManaged: true },
-    { id: '3', name: 'Abuelo', role: 'Adulto Mayor' }
-  ]);
+export class FamilyDashboardComponent implements OnInit {
+  private familyService = inject(FamilyService);
+  private router = inject(Router);
 
-  selectedProfile = signal<FamilyProfile | null>(null);
-  transferProfile = signal<FamilyProfile | null>(null);
+  profiles = computed(() => this.familyService.profiles());
+  isLoading = computed(() => this.familyService.isLoading());
 
-  constructor(private router: Router) {}
+  selectedProfile = signal<Profile | null>(null);
+  transferProfile = signal<Profile | null>(null);
 
-  getBadgeStatus(role: string): 'success' | 'processing' | 'default' | 'error' | 'warning' {
+  ngOnInit() {
+    this.familyService.loadUserProfiles().subscribe();
+  }
+
+  getBadgeStatus(role?: string): 'success' | 'processing' | 'default' | 'error' | 'warning' {
     switch(role) {
-      case 'Titular': return 'processing';
-      case 'Hijo/a': return 'success';
-      case 'Adulto Mayor': return 'warning';
+      case 'OWNER': return 'processing';
+      case 'CO_ADMIN': return 'success';
+      case 'VIEWER': return 'warning';
       default: return 'default';
+    }
+  }
+
+  getRoleLabel(role?: string): string {
+    switch(role) {
+      case 'OWNER': return 'Titular';
+      case 'CO_ADMIN': return 'Co-Admin';
+      case 'VIEWER': return 'Lector';
+      default: return 'Desconocido';
     }
   }
 
@@ -70,7 +74,7 @@ export class FamilyDashboardComponent {
     this.router.navigate(['/dashboard/family/editor', id]);
   }
 
-  openShareModal(profile: FamilyProfile) {
+  openShareModal(profile: Profile) {
     this.selectedProfile.set(profile);
   }
 
@@ -78,7 +82,7 @@ export class FamilyDashboardComponent {
     this.selectedProfile.set(null);
   }
 
-  openTransferModal(profile: FamilyProfile) {
+  openTransferModal(profile: Profile) {
     this.transferProfile.set(profile);
   }
 

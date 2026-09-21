@@ -27,25 +27,28 @@
         <!-- Top row: Avatar & Info -->
         <div class="profile-header">
           <div class="user-info">
-            <nz-avatar [nzSize]="64" [nzSrc]="'https://i.pravatar.cc/150?u=' + profile.id"></nz-avatar>
+            <nz-avatar [nzSize]="64" [nzSrc]="profile.photoUrl || 'https://ui-avatars.com/api/?name=' + profile.aliasName"></nz-avatar>
             <div class="details">
-              <h3>{{ profile.name }}</h3>
-              <p class="age">10 años y 4 meses</p>
-              <nz-badge class="role-badge" [nzStatus]="getBadgeStatus(profile.role)" [nzText]="profile.role"></nz-badge>
+              <h3>{{ profile.aliasName }}</h3>
+              <p class="age">Activo</p>
+              <nz-badge class="role-badge" [nzStatus]="getBadgeStatus(profile.myRole)" [nzText]="getRoleLabel(profile.myRole)"></nz-badge>
             </div>
           </div>
           <div class="blood-type">
-            <i nz-icon nzType="bg-colors" class="drop-icon"></i> O+
+            <i nz-icon nzType="bg-colors" class="drop-icon"></i> {{ profile.bloodType !== 'UNKNOWN' ? profile.bloodType : 'N/A' }}
           </div>
         </div>
 
         <!-- Middle rows: Status & Alerts -->
         <div class="profile-rows">
-          <div class="status-row">
-            <i nz-icon nzType="team"></i> Co-administrado con Mamá
+          <div class="status-row" *ngIf="profile.myRole === 'CO_ADMIN' || profile.myRole === 'VIEWER'">
+            <i nz-icon nzType="team"></i> {{ profile.myRole === 'CO_ADMIN' ? 'Co-administrador' : 'Lector' }}
           </div>
-          <div class="alert-row">
-            <i nz-icon nzType="warning" nzTheme="fill"></i> Alergia mortal: Penicilina
+          <div class="status-row" *ngIf="profile.myRole === 'OWNER'">
+            <i nz-icon nzType="star"></i> Administrador principal
+          </div>
+          <div class="alert-row" *ngIf="profile.medicalRecords && profile.medicalRecords.length > 0">
+            <i nz-icon nzType="warning" nzTheme="fill"></i> {{ profile.medicalRecords[0].title }}
           </div>
         </div>
 
@@ -97,12 +100,12 @@
 
 <app-share-profile-modal 
   *ngIf="selectedProfile()" 
-  [profileName]="selectedProfile()?.name || ''"
+  [profileName]="selectedProfile()?.aliasName || ''"
   (onClose)="closeShareModal()">
 </app-share-profile-modal>
 
 <app-transfer-custody-modal
   *ngIf="transferProfile()"
-  [profileName]="transferProfile()?.name || ''"
+  [profileName]="transferProfile()?.aliasName || ''"
   (onClose)="closeTransferModal()">
 </app-transfer-custody-modal>

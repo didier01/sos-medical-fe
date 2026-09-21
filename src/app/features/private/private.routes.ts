@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
 import { PrivateLayoutComponent } from './layout/private-layout.component';
 import { inject } from '@angular/core';
-import { AuthStore } from '../../core/auth/auth.store';
+import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
 
 // Guard simple en línea para proteger el dashboard
 const authGuard = () => {
-  const authStore = inject(AuthStore);
+  const authService = inject(AuthService);
   const router = inject(Router);
   
-  if (authStore.isAuthenticated()) {
+  if (authService.isAuthenticated()) {
     return true;
   }
   

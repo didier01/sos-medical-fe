@@ -11,19 +11,28 @@
     <h2>{{ isNewProfile ? 'Nuevo Perfil Médico' : 'Editar Ficha Médica' }}</h2>
     <div class="actions">
       <button nz-button nzType="default" (click)="goBack()">Cancelar</button>
-      <button nz-button nzType="primary" (click)="saveProfile()" [disabled]="medicalForm.invalid">Guardar</button>
+      <button nz-button nzType="primary" (click)="onSubmit()" [disabled]="medicalProfileForm.invalid">Guardar</button>
     </div>
   </div>
 
-  <form nz-form [formGroup]="medicalForm" nzLayout="vertical">
+  <form nz-form [formGroup]="medicalProfileForm" nzLayout="vertical">
     <nz-collapse>
+      
       <!-- 1. Biometría -->
       <nz-collapse-panel nzHeader="1. Datos Personales y Biometría" [nzActive]="true">
-        <div class="form-grid">
+        <div formGroupName="profile" class="form-grid">
+          
           <nz-form-item>
-            <nz-form-label nzRequired>Nombre Completo</nz-form-label>
+            <nz-form-label nzRequired>Alias / Nombre Corto</nz-form-label>
             <nz-form-control nzErrorTip="Requerido">
-              <input nz-input formControlName="fullName" placeholder="Ej. Juan Pérez" />
+              <input nz-input formControlName="aliasName" placeholder="Ej. Juan" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre Completo Privado</nz-form-label>
+            <nz-form-control nzErrorTip="Requerido">
+              <input nz-input formControlName="fullNamePrivate" placeholder="Ej. Juan Pérez" />
             </nz-form-control>
           </nz-form-item>
 
@@ -46,79 +55,204 @@
                 <nz-option nzValue="B-" nzLabel="B-"></nz-option>
                 <nz-option nzValue="AB+" nzLabel="AB+"></nz-option>
                 <nz-option nzValue="AB-" nzLabel="AB-"></nz-option>
+                <nz-option nzValue="UNKNOWN" nzLabel="Desconocido"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label>URL de Fotografía</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="photoUrl" placeholder="https://..." />
+            </nz-form-control>
+          </nz-form-item>
+
         </div>
       </nz-collapse-panel>
 
       <!-- 2. Directorio SOS -->
-      <nz-collapse-panel nzHeader="2. Directorio SOS Privado" [nzActive]="true">
-        <div class="contact-helper">
-          <button nz-button nzType="default" nzSize="small" (click)="useMyDataAsContact()">
-            <i nz-icon nzType="user"></i> Usar mis datos como contacto SOS principal
-          </button>
-        </div>
+      <nz-collapse-panel nzHeader="2. Directorio SOS Privado (Contactos de Emergencia)" [nzActive]="true">
         
-        <div formGroupName="emergencyContact" class="form-grid">
-          <nz-form-item>
-            <nz-form-label nzRequired>Nombre del Contacto</nz-form-label>
-            <nz-form-control nzErrorTip="Requerido">
-              <input nz-input formControlName="name" placeholder="Ej. María (Madre)" />
-            </nz-form-control>
-          </nz-form-item>
-          
-          <nz-form-item>
-            <nz-form-label nzRequired>Teléfono (Formato E.164: +57...)</nz-form-label>
-            <nz-form-control nzErrorTip="Requiere formato internacional">
-              <input nz-input formControlName="phone" placeholder="+57 300 000 0000" />
-            </nz-form-control>
-          </nz-form-item>
+        <div formArrayName="emergencyContacts">
+          <div *ngFor="let contact of emergencyContacts.controls; let i = index" [formGroupName]="i" class="array-item-box">
+            
+            <div class="item-header">
+              <h4>Contacto #{{ i + 1 }}</h4>
+              <div>
+                <button *ngIf="i === 0" nz-button nzType="link" nzSize="small" (click)="useMyDataAsContact(i)">
+                  <i nz-icon nzType="user"></i> Usar mis datos
+                </button>
+                <button nz-button nzType="text" nzDanger (click)="removeEmergencyContact(i)" *ngIf="emergencyContacts.length > 1">
+                  <i nz-icon nzType="delete"></i> Remover
+                </button>
+              </div>
+            </div>
 
-          <nz-form-item class="switch-item">
-            <nz-form-label>¿Dispone de WhatsApp?</nz-form-label>
-            <nz-form-control>
-              <nz-switch formControlName="hasWhatsapp"></nz-switch>
-            </nz-form-control>
-          </nz-form-item>
+            <div class="form-grid">
+              <nz-form-item>
+                <nz-form-label nzRequired>Nombre del Contacto</nz-form-label>
+                <nz-form-control nzErrorTip="Requerido">
+                  <input nz-input formControlName="name" placeholder="Ej. María" />
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label nzRequired>Parentesco / Relación</nz-form-label>
+                <nz-form-control nzErrorTip="Requerido">
+                  <nz-select formControlName="relationship" nzPlaceHolder="Seleccione el parentesco">
+                    <nz-option nzValue="Mamá" nzLabel="Mamá"></nz-option>
+                    <nz-option nzValue="Papá" nzLabel="Papá"></nz-option>
+                    <nz-option nzValue="Abuela" nzLabel="Abuela"></nz-option>
+                    <nz-option nzValue="Abuelo" nzLabel="Abuelo"></nz-option>
+                    <nz-option nzValue="Tía" nzLabel="Tía"></nz-option>
+                    <nz-option nzValue="Tío" nzLabel="Tío"></nz-option>
+                    <nz-option nzValue="Prima" nzLabel="Prima"></nz-option>
+                    <nz-option nzValue="Primo" nzLabel="Primo"></nz-option>
+                    <nz-option nzValue="Otro" nzLabel="Otro"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+              
+              <nz-form-item>
+                <nz-form-label nzRequired>Teléfono Móvil</nz-form-label>
+                <nz-form-control nzErrorTip="El número debe tener exactamente 10 dígitos">
+                  <nz-input-group [nzAddOnBefore]="countryCodeTemplate">
+                    <input nz-input formControlName="phone" placeholder="300 000 0000" maxlength="10" />
+                  </nz-input-group>
+                  <ng-template #countryCodeTemplate>
+                    <nz-select formControlName="countryCode" style="width: 100px;">
+                      <nz-option nzLabel="🇨🇴 +57" nzValue="+57"></nz-option>
+                      <nz-option nzLabel="🇺🇸 +1" nzValue="+1"></nz-option>
+                      <nz-option nzLabel="🇲🇽 +52" nzValue="+52"></nz-option>
+                      <nz-option nzLabel="🇪🇸 +34" nzValue="+34"></nz-option>
+                    </nz-select>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item class="switch-item">
+                <nz-form-label>¿Dispone de WhatsApp?</nz-form-label>
+                <nz-form-control>
+                  <nz-switch formControlName="isWhatsapp"></nz-switch>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
         </div>
+
+        <button nz-button nzType="dashed" (click)="addEmergencyContact()" style="width: 100%; margin-top: 16px;">
+          <i nz-icon nzType="plus"></i> Agregar Contacto
+        </button>
+
       </nz-collapse-panel>
 
       <!-- 3. Alertas Críticas -->
       <nz-collapse-panel nzHeader="3. Alertas Críticas Médicas" [nzActive]="true">
-        <nz-form-item>
-          <nz-form-label>Alergias Severas (Sepárelas por comas)</nz-form-label>
-          <nz-form-control>
-            <input nz-input formControlName="allergies" placeholder="Ej. Penicilina, Nueces" />
-          </nz-form-control>
-        </nz-form-item>
         
-        <nz-form-item>
-          <nz-form-label>Condiciones Preexistentes</nz-form-label>
-          <nz-form-control>
-            <input nz-input formControlName="conditions" placeholder="Ej. Asma, Diabetes Tipo 1" />
-          </nz-form-control>
-        </nz-form-item>
-        
-        <div class="form-grid">
+        <!-- Alergias -->
+        <div class="medical-array-section">
+          <h4>Alergias</h4>
+          <div formArrayName="allergies">
+            <div *ngFor="let item of allergies.controls; let i = index" [formGroupName]="i" class="inline-array-item">
+              <nz-form-item style="margin-bottom: 0; flex-grow: 1;">
+                <nz-form-control nzErrorTip="Requerido">
+                  <input nz-input formControlName="title" placeholder="Ej. Penicilina" />
+                </nz-form-control>
+              </nz-form-item>
+              <button nz-button nzType="text" nzDanger (click)="removeAllergy(i)">
+                <i nz-icon nzType="close-circle"></i>
+              </button>
+            </div>
+          </div>
+          <button nz-button nzType="dashed" nzSize="small" (click)="addAllergy()" style="margin-top: 8px;">
+            <i nz-icon nzType="plus"></i> Agregar Alergia
+          </button>
+        </div>
+
+        <nz-divider></nz-divider>
+
+        <!-- Condiciones -->
+        <div class="medical-array-section">
+          <h4>Condiciones Preexistentes</h4>
+          <div formArrayName="conditions">
+            <div *ngFor="let item of conditions.controls; let i = index" [formGroupName]="i" class="inline-array-item">
+              <nz-form-item style="margin-bottom: 0; flex-grow: 1;">
+                <nz-form-control nzErrorTip="Requerido">
+                  <input nz-input formControlName="title" placeholder="Ej. Asma" />
+                </nz-form-control>
+              </nz-form-item>
+              <button nz-button nzType="text" nzDanger (click)="removeCondition(i)">
+                <i nz-icon nzType="close-circle"></i>
+              </button>
+            </div>
+          </div>
+          <button nz-button nzType="dashed" nzSize="small" (click)="addCondition()" style="margin-top: 8px;">
+            <i nz-icon nzType="plus"></i> Agregar Condición
+          </button>
+        </div>
+
+        <nz-divider></nz-divider>
+
+        <!-- Medicamentos -->
+        <div class="medical-array-section">
+          <h4>Medicamentos Recurrentes</h4>
+          <div formArrayName="medications">
+            <div *ngFor="let item of medications.controls; let i = index" [formGroupName]="i" class="inline-array-item">
+              <nz-form-item style="margin-bottom: 0; flex-grow: 1;">
+                <nz-form-control nzErrorTip="Requerido">
+                  <input nz-input formControlName="title" placeholder="Ej. Losartán 50mg" />
+                </nz-form-control>
+              </nz-form-item>
+              <button nz-button nzType="text" nzDanger (click)="removeMedication(i)">
+                <i nz-icon nzType="close-circle"></i>
+              </button>
+            </div>
+          </div>
+          <button nz-button nzType="dashed" nzSize="small" (click)="addMedication()" style="margin-top: 8px;">
+            <i nz-icon nzType="plus"></i> Agregar Medicamento
+          </button>
+        </div>
+
+      </nz-collapse-panel>
+
+      <!-- 4. Seguridad Social / EPS -->
+      <nz-collapse-panel nzHeader="4. Seguridad Social / EPS" [nzActive]="true">
+        <div formGroupName="insurance" class="form-grid">
+          
           <nz-form-item>
-            <nz-form-label nzRequired>Seguridad Social / EPS</nz-form-label>
-            <nz-form-control>
-              <input nz-input formControlName="insurance" placeholder="Ej. Sura, Sanitas" />
+            <nz-form-label nzRequired>Nombre Aseguradora / EPS</nz-form-label>
+            <nz-form-control nzErrorTip="Requerido">
+              <input nz-input formControlName="title" placeholder="Ej. Sanitas, Sura" />
             </nz-form-control>
           </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label>Número de Póliza o Afiliación</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="policyNumber" placeholder="Ej. 123456789" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label>Teléfono de Asistencia EPS</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="assistancePhone" placeholder="Ej. #888" />
+            </nz-form-control>
+          </nz-form-item>
+
         </div>
       </nz-collapse-panel>
 
-      <!-- 4. Instrucciones Especiales -->
-      <nz-collapse-panel nzHeader="4. Instrucciones Especiales" [nzActive]="true">
+      <!-- 5. Instrucciones Especiales -->
+      <nz-collapse-panel nzHeader="5. Instrucciones Especiales" [nzActive]="true">
         <nz-form-item>
           <nz-form-label>Notas Operativas</nz-form-label>
           <nz-form-control>
-            <textarea nz-input formControlName="notes" rows="4" placeholder="Ej. El inhalador está en el bolsillo pequeño de la mochila."></textarea>
+            <textarea nz-input formControlName="notes" rows="4" placeholder="Ej. El inhalador está en el bolsillo de la mochila..."></textarea>
           </nz-form-control>
         </nz-form-item>
       </nz-collapse-panel>
+      
     </nz-collapse>
   </form>
 </div>

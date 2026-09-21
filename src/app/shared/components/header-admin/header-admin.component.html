@@ -35,6 +35,41 @@
       <button nz-button nzType="primary" routerLink="/dashboard/family/editor/new" class="create-btn">
         <i nz-icon nzType="plus"></i> Crear Nuevo Perfil
       </button>
+
+      <!-- User Dropdown -->
+      <div class="user-menu-trigger" nz-dropdown nzTrigger="click" [nzDropdownMenu]="userMenu" nzPlacement="bottomRight">
+        <nz-avatar [nzText]="user()?.displayName?.charAt(0) || 'U'" class="user-avatar"></nz-avatar>
+        <div class="user-info-text">
+          <span class="user-name">{{ user()?.displayName || 'Usuario' }}</span>
+          <span class="user-role">Tutor</span>
+        </div>
+        <i nz-icon nzType="down" class="dropdown-icon"></i>
+      </div>
+
+      <nz-dropdown-menu #userMenu="nzDropdownMenu">
+        <div class="user-dropdown-card">
+          <div class="dropdown-header">
+            <nz-avatar [nzText]="user()?.displayName?.charAt(0) || 'U'" nzSize="large" class="dropdown-avatar"></nz-avatar>
+            <div class="dropdown-header-info">
+              <h4>{{ user()?.displayName || 'Usuario' }}</h4>
+              <p>{{ user()?.email || 'usuario@ejemplo.com' }}</p>
+            </div>
+          </div>
+          <nz-divider style="margin: 0"></nz-divider>
+          <ul nz-menu class="dropdown-list">
+            <li nz-menu-item>
+              <i nz-icon nzType="user"></i> Mi Perfil
+            </li>
+            <li nz-menu-item>
+              <i nz-icon nzType="setting"></i> Configuración
+            </li>
+            <li nz-menu-divider></li>
+            <li nz-menu-item nzDanger (click)="logout()">
+              <i nz-icon nzType="logout"></i> Cerrar Sesión
+            </li>
+          </ul>
+        </div>
+      </nz-dropdown-menu>
     </div>
   </div>
 </nz-header>
