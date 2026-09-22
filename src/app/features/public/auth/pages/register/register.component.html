@@ -1,37 +1,94 @@
-<div class="auth-container">
-  <nz-card nzTitle="Registro de Tutor / Familiar" class="auth-card">
-    <form nz-form [formGroup]="registerForm" (ngSubmit)="submitForm()">
-      
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Por favor ingrese su nombre completo!">
-          <nz-input-group nzPrefixIcon="idcard">
-            <input type="text" nz-input formControlName="displayName" placeholder="Nombre Completo" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Por favor ingrese un correo válido!">
-          <nz-input-group nzPrefixIcon="user">
-            <input type="email" nz-input formControlName="email" placeholder="Correo Electrónico" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-
-      <nz-form-item>
-        <nz-form-control nzErrorTip="La contraseña debe tener al menos 6 caracteres!">
-          <nz-input-group nzPrefixIcon="lock">
-            <input type="password" nz-input formControlName="password" placeholder="Contraseña" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-
-      <button nz-button class="login-form-button" [nzType]="'primary'" nzBlock>Registrarse</button>
-      
-      <div class="auth-footer">
-        ¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a>
+<div class="split-layout">
+  <!-- Left Column: Form -->
+  <div class="form-column">
+    <div class="auth-content">
+      <div class="brand">
+        <nz-avatar nzIcon="heart" class="brand-icon" [nzSize]="48" [nzShape]="'square'"></nz-avatar>
+        <div class="brand-text">
+          <h1>Identidad Médica SOS</h1>
+          <p>QR y NFC de emergencia para toda la familia</p>
+        </div>
       </div>
+
+      <nz-card class="login-card" [nzBordered]="true">
+        <h2>Crear su cuenta</h2>
+        <p class="subtitle">Regístrese como Administrador del Hogar.</p>
+
+        <form nz-form [formGroup]="registerForm" (ngSubmit)="submitForm()" nzLayout="vertical">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre Completo</nz-form-label>
+            <nz-form-control nzErrorTip="Por favor ingrese su nombre completo">
+              <nz-input-group [nzPrefix]="prefixIdCard">
+                <input nz-input formControlName="fullName" placeholder="Ej. Didier Silva" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Correo electrónico</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese un correo válido">
+              <nz-input-group [nzPrefix]="prefixUser">
+                <input nz-input formControlName="email" placeholder="didier@familia.co" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Contraseña</nz-form-label>
+            <nz-form-control nzErrorTip="La contraseña debe tener al menos 8 caracteres">
+              <nz-input-group [nzPrefix]="prefixLock">
+                <input nz-input type="password" formControlName="password" placeholder="••••••••" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <button nz-button nzType="primary" nzBlock nzSize="large" class="submit-btn" [disabled]="registerForm.invalid" [nzLoading]="isSubmitting()">
+            <span>Crear Cuenta</span>
+          </button>
+          
+          <nz-divider nzText="o"></nz-divider>
+          
+          <button nz-button nzType="default" nzBlock nzSize="large" type="button" class="google-btn">
+            <i nz-icon nzType="google"></i> <span>Registrarse con Google</span>
+          </button>
+          
+          <div class="links">
+            <a routerLink="/auth/login">¿Ya tiene una cuenta? Inicie sesión</a>
+          </div>
+        </form>
+      </nz-card>
       
-    </form>
-  </nz-card>
+      <div class="legal-footer">
+        <i nz-icon nzType="safety-certificate" nzTheme="outline" class="safe-icon"></i>
+        <span>Al registrarse, acepta los Términos y la Política de Tratamiento de Datos.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Info -->
+  <div class="info-column">
+    <div class="info-content">
+      <div class="badge-text">SEGURIDAD Y PRIVACIDAD</div>
+      <h1>Protegemos lo que más<br>le importa.</h1>
+      
+      <ul class="features-list">
+        <li>
+          <span class="dot dot-red"></span>
+          Información médica crítica disponible 24/7 sin batería.
+        </li>
+        <li>
+          <span class="dot dot-orange"></span>
+          Alertas inmediatas a familiares en caso de escaneo.
+        </li>
+        <li>
+          <span class="dot dot-green"></span>
+          Privacidad total: usted controla qué datos se revelan.
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
+
+<ng-template #prefixIdCard><i nz-icon nzType="idcard"></i></ng-template>
+<ng-template #prefixUser><i nz-icon nzType="mail"></i></ng-template>
+<ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
